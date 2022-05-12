@@ -1,7 +1,7 @@
 from scipy.spatial import distance
 import random as r
 
-previous_rainfall = r.randint(-1, 1)
+previous_rainfall = 0
 
 def isOcean(coordinates, world_size):
     if distance.euclidean(coordinates, [world_size / 2, world_size / 2]) > world_size * 15/16:
@@ -13,10 +13,12 @@ def isOcean(coordinates, world_size):
 def biomeCheck(coordinates, world_size):
     global previous_rainfall
     rainfall = 0
+    rainfall_list = [-1, 0, 1]
     if r.randint(0, 100) > 75:
-        rainfall = r.randint(-1, 1)
-    else:
-        rainfall = previous_rainfall
+        rainfall_list.remove(previous_rainfall)
+        rainfall = r.choice(rainfall_list)
+        previous_rainfall = rainfall
+
     polar_distance = distance.euclidean(coordinates, [world_size / 8, world_size])
     if polar_distance > distance.euclidean(coordinates, [world_size / 2, 0]):
         polar_distance = distance.euclidean(coordinates, [world_size / 2, 0])
@@ -55,3 +57,25 @@ def biomeCheck(coordinates, world_size):
             return "#"
     else:
         return "#"
+
+def tileToColor(tile):
+    if tile == "A":
+        return '\033[47m'
+    elif tile == "S":
+        return '\033[33m'
+    elif tile == "T":
+        return '\033[36;47m'
+    elif tile == "V":
+        return '\033[31;43m'
+    elif tile == "F":
+        return '\033[39;42m'
+    elif tile == "M":
+        return '\033[32;40m'
+    elif tile == "D":
+        return '\033[33;49m'
+    elif tile == "J":
+        return '\033[33;42m'
+    elif tile == "R":
+        return '\033[34;42m'
+    else:
+        return ""

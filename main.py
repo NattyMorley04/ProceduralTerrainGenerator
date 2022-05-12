@@ -23,6 +23,6 @@ for y in range(0, 128):
         tileToAdd = tilesetFunctions.isOcean([x, y], world_size)
         if tileToAdd == "#":
             tileToAdd = tilesetFunctions.biomeCheck([x, y], world_size)
-        print(tileToAdd, end="")
+        print(tilesetFunctions.tileToColor(tileToAdd)+tileToAdd, end="")
     print("")
 plt.show()
