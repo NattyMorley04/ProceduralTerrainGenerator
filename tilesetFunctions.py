@@ -4,7 +4,7 @@ import random as r
 previous_rainfall = 0
 
 def isOcean(coordinates, world_size):
-    if distance.euclidean(coordinates, [world_size / 2, world_size / 2]) > world_size * 15/16:
+    if distance.euclidean(coordinates, [world_size / 2, world_size]) > world_size * 2:
         return "O"
     else:
         return "#"
@@ -13,20 +13,16 @@ def isOcean(coordinates, world_size):
 def biomeCheck(coordinates, world_size):
     global previous_rainfall
     rainfall = 0
-    rainfall_list = [-1, 0, 1]
     if r.randint(0, 100) > 75:
-        rainfall_list.remove(previous_rainfall)
-        rainfall = r.choice(rainfall_list)
+        rainfall = r.randint(-1,1)
         previous_rainfall = rainfall
 
-    polar_distance = distance.euclidean(coordinates, [world_size / 8, world_size])
-    if polar_distance > distance.euclidean(coordinates, [world_size / 2, 0]):
-        polar_distance = distance.euclidean(coordinates, [world_size / 2, 0])
-
-    if polar_distance > world_size / 8:
-        temperature = -1
-    elif polar_distance < 7 / 8 * world_size:
+    if world_size * 3/8 < coordinates[1] < world_size * 5/8:
         temperature = 1
+    elif (coordinates[1] > world_size * 7/8) or (coordinates[1] < world_size * 1/8):
+        temperature = -1
+    else:
+        temperature = 0
 
     if temperature == -1:
         if rainfall == -1:
@@ -60,22 +56,24 @@ def biomeCheck(coordinates, world_size):
 
 def tileToColor(tile):
     if tile == "A":
-        return '\033[47m'
+        return '\033[39;49m'
     elif tile == "S":
-        return '\033[33m'
+        return '\033[39;49m'
     elif tile == "T":
-        return '\033[36;47m'
+        return '\033[36;49m'
     elif tile == "V":
-        return '\033[31;43m'
+        return '\033[31;49m'
     elif tile == "F":
-        return '\033[39;42m'
+        return '\033[32;49m'
     elif tile == "M":
-        return '\033[32;40m'
+        return '\033[32;49m'
     elif tile == "D":
         return '\033[33;49m'
     elif tile == "J":
-        return '\033[33;42m'
+        return '\033[32;49m'
     elif tile == "R":
-        return '\033[34;42m'
+        return '\033[32;49m'
+    elif tile == "O":
+        return '\033[34;49m'
     else:
         return ""

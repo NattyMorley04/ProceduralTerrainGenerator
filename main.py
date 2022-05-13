@@ -17,8 +17,8 @@ for i in range(regions):
 vor = Voronoi(points, qhull_options='Qbb Qc Qx')
 
 
-for y in range(0, 128):
-    for x in range(0, 128):
+for y in range(0, world_size):
+    for x in range(0, world_size * 2):
         tileToAdd = None
         tileToAdd = tilesetFunctions.isOcean([x, y], world_size)
         if tileToAdd == "#":
