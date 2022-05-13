@@ -6,7 +6,7 @@ import locationFunctions
 import tilesetFunctions
 import voronoiFunctions
 
-seed = r.randint(1,1000000)
+seed = r.randint(1, 1000000)
 r.seed(seed)
 world_size = 64
 world_complexity = 64
@@ -34,8 +34,13 @@ for y in range(0, world_size):
 
 print("Planet Name: "+locationFunctions.planetNameGenerator(seed))
 
-for item_row in current_map:
-    for item_x in item_row:
-        print(tilesetFunctions.tileToColor(item_x)+item_x, end="")
-    print("")
+current_map = tilesetFunctions.addRivers(current_map, world_size)
+
+def displayMap(current_map):
+    for item_row in current_map:
+        for item_x in item_row:
+            print(tilesetFunctions.tileToColor(item_x)+item_x, end="")
+        print("")
+
+displayMap(current_map)
 plt.show()

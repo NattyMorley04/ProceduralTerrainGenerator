@@ -78,6 +78,8 @@ def tileToColor(tile):
         return '\033[35m'
     elif tile == "A":
         return '\033[39;49m'
+    elif tile == "T":
+        return '\033[39;49m'
     elif tile == "S":
         return '\033[39;49m'
     elif tile == "I":
@@ -96,5 +98,50 @@ def tileToColor(tile):
         return '\033[32;49m'
     elif tile == "O":
         return '\033[34;49m'
+    elif tile == "─":
+        return '\033[34;49m'
+    elif tile == "│":
+        return '\033[34;49m'
+    elif tile == "┼":
+        return '\033[34;49m'
     else:
         return ""
+
+def addRivers(coordinates, world_length):
+    map_with_rivers = coordinates
+    for row in range(0, len(coordinates)-1):
+        counter = 0
+        for item_x in coordinates[row]:
+            if item_x != "O":
+                if r.randint(0, 100) == 1:
+                    if r.randint(0, 1) == 1:
+                        map_with_rivers[row][counter] = "─"
+                    else:
+                        map_with_rivers[row][counter] = "│"
+                elif counter != 0 and (counter != world_length - 1):
+                    if ((coordinates[row][counter - 1] == "─") or (coordinates[row][counter - 1] == "│") \
+                            or (coordinates[row - 1] == "┼")) and (r.randint(0, 1) == 0):
+                        map_with_rivers[row][counter] = "─"
+                if row != 0:
+                    if ((coordinates[row - 1][counter] == "─") or (coordinates[row - 1] == "│") \
+                            or (coordinates[row - 1] == "┼")) and (r.randint(0, 1) == 0):
+                        map_with_rivers[row][counter] = "│"
+            counter += 1
+    map_with_rivers = riverCornerCheck(map_with_rivers, world_length)
+    return map_with_rivers
+
+def riverCornerCheck(world_map, world_size):
+    map_with_river_check = world_map
+    for y in range(0, len(world_map) - 1):
+        for x in range(0, len(world_map) - 1):
+            if (map_with_river_check[x][y] == "─") or (map_with_river_check[x][y] == "│"):
+                if (y != 0) and (x != 0) and (y != world_size - 1) and (x != world_size - 1):
+                    if (map_with_river_check[y][x - 1] == "─") and (map_with_river_check[y - 1][x] == "│"):
+                        map_with_river_check[y][x] = "┼"
+                    elif (map_with_river_check[y][x + 1] == "─") and (map_with_river_check[y - 1][x] == "│"):
+                        map_with_river_check[y][x] = "┼"
+                    elif (map_with_river_check[y][x + 1] == "─") and (map_with_river_check[y + 1][x] == "│"):
+                        map_with_river_check[y][x] = "┼"
+                    elif (map_with_river_check[y][x - 1] == "─") and (map_with_river_check[y + 1][x] == "│"):
+                        map_with_river_check[y][x] = "┼"
+    return map_with_river_check
