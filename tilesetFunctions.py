@@ -6,7 +6,7 @@ import voronoiFunctions
 previous_rainfall = 0
 
 def isOcean(coordinates, world_size):
-    if distance.euclidean(coordinates, [world_size / 2, world_size]) > world_size * 2:
+    if distance.euclidean(coordinates, [world_size/2, world_size]) > world_size * 2:
         return "O"
     else:
         return "#"
@@ -14,26 +14,40 @@ def isOcean(coordinates, world_size):
 
 def biomeCheck(coordinates, world_size, regions, points):
     global previous_rainfall
-    if voronoiFunctions.findRegionID(coordinates, regions, points) % 3 == 0:
+    region_id = voronoiFunctions.findRegionID(coordinates, points) 
+
+    if region_id % 3 == 0:
         rainfall = 0
-    elif voronoiFunctions.findRegionID(coordinates, regions, points) % 3 == 1:
+    elif region_id % 3 == 1:
         rainfall = -1
-    elif voronoiFunctions.findRegionID(coordinates, regions, points) % 3 == 2:
+    elif region_id % 3 == 2:
         rainfall = 1
-    if world_size * 3/8 < coordinates[1] < world_size * 5/8:
+    if (coordinates[1] > world_size * 15/16) or (coordinates[1] < world_size * 1/16):
+        temperature = -3
+    elif world_size * 3/8 < coordinates[1] < world_size * 5/8:
         temperature = 1
     elif (coordinates[1] > world_size * 7/8) or (coordinates[1] < world_size * 1/8):
         temperature = -1
     else:
         temperature = 0
+        rainfall = 0
+
+    if region_id % 2 == 0 and temperature != -3:
+        if r.randint(0, 100) < 95:
+            return "O"
+
+    if r.randint(0,100) > 95:
+        return "O"
 
     if temperature == -1:
         if rainfall == -1:
-            return "A"
-        elif rainfall == 0:
-            return "S"
-        elif rainfall == 1:
             return "T"
+        elif rainfall == 0:
+            return "I"
+        elif rainfall == 1:
+            return "S"
+        elif temperature == -3:
+            return "A"
         else:
             return "#"
     elif temperature == 0:
@@ -54,15 +68,19 @@ def biomeCheck(coordinates, world_size, regions, points):
             return "R"
         else:
             return "#"
+    elif temperature == -3:
+        return "A"
     else:
         return "#"
 
 def tileToColor(tile):
-    if tile == "A":
+    if tile == "X":
+        return '\033[35m'
+    elif tile == "A":
         return '\033[39;49m'
     elif tile == "S":
         return '\033[39;49m'
-    elif tile == "T":
+    elif tile == "I":
         return '\033[36;49m'
     elif tile == "V":
         return '\033[31;49m'

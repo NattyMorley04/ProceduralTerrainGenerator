@@ -1,11 +1,16 @@
 from scipy.spatial import distance
 
 
-def findRegionID(coordinates, regions, points):
-    closest_index = None
+def findRegionID(coordinates, points, precision=32 ):
+    closest_index = 0
     dist = float('inf')
-    for i in range(0, regions):
-        if float(distance.euclidean(points[i], coordinates)) < dist:
-            dist = distance.euclidean(points[i], coordinates)
-            closest_index = i
+    while dist > precision:
+        closest_index += 1
+        try:
+            if round(float(distance.euclidean(points[closest_index], coordinates))) < dist:
+                dist = round(distance.euclidean(points[closest_index], coordinates))
+
+        except:
+            pass
+
     return closest_index
