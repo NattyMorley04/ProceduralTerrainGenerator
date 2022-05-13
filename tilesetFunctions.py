@@ -5,12 +5,22 @@ import voronoiFunctions
 
 previous_rainfall = 0
 
-def isOcean(coordinates, world_size):
-    if distance.euclidean(coordinates, [world_size/2, world_size]) > world_size * 2:
-        return "O"
+def heightCheck(coordinates, height_map):
+    x = coordinates[0]
+    y = coordinates[1]
+    current_height = height_map[x][y]
+    if current_height > 0:
+        if current_height > 0.5:
+            return "🌋"
+        elif current_height > 0.45:
+            return "Δ"
+        elif current_height > 0.4:
+            return "∩"
     else:
-        return "#"
+        if current_height < -0.2:
+            return "O"
 
+    return "#"
 
 def biomeCheck(coordinates, world_size, regions, points):
     global previous_rainfall
@@ -96,5 +106,13 @@ def tileToColor(tile):
         return '\033[32;49m'
     elif tile == "O":
         return '\033[34;49m'
+    elif tile == "T":
+        return '\033[39;49m'
+    elif tile == "Δ":
+        return '\033[90m'
+    elif tile == "∩":
+        return '\033[90m'
+    elif tile == "🌋":
+        return '\033[31m'
     else:
         return ""
