@@ -8,7 +8,7 @@ from colorama import Fore
 
 world_size = 64
 world_complexity = 50
-regions = r.randint(2*world_complexity, 16*world_complexity)
+regions = r.randint(2*world_complexity, 4*world_complexity)
 points = [[world_size, world_size], [-world_size, world_size], [world_size, -world_size], [-world_size, -world_size]]
 
 for i in range(regions):
@@ -22,7 +22,7 @@ for y in range(0, world_size):
         tileToAdd = None
         tileToAdd = tilesetFunctions.isOcean([x, y], world_size)
         if tileToAdd == "#":
-            tileToAdd = tilesetFunctions.biomeCheck([x, y], world_size)
+            tileToAdd = tilesetFunctions.biomeCheck([x, y], world_size, regions, points)
         print(tilesetFunctions.tileToColor(tileToAdd)+tileToAdd, end="")
     print("")
 plt.show()

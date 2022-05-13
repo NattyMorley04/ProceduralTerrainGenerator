@@ -1,6 +1,8 @@
 from scipy.spatial import distance
 import random as r
 
+import voronoiFunctions
+
 previous_rainfall = 0
 
 def isOcean(coordinates, world_size):
@@ -10,13 +12,14 @@ def isOcean(coordinates, world_size):
         return "#"
 
 
-def biomeCheck(coordinates, world_size):
+def biomeCheck(coordinates, world_size, regions, points):
     global previous_rainfall
-    rainfall = 0
-    if r.randint(0, 100) > 75:
-        rainfall = r.randint(-1,1)
-        previous_rainfall = rainfall
-
+    if voronoiFunctions.findRegionID(coordinates, regions, points) % 3 == 0:
+        rainfall = 0
+    elif voronoiFunctions.findRegionID(coordinates, regions, points) % 3 == 1:
+        rainfall = -1
+    elif voronoiFunctions.findRegionID(coordinates, regions, points) % 3 == 2:
+        rainfall = 1
     if world_size * 3/8 < coordinates[1] < world_size * 5/8:
         temperature = 1
     elif (coordinates[1] > world_size * 7/8) or (coordinates[1] < world_size * 1/8):
