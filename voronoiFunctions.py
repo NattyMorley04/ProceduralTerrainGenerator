@@ -1,7 +1,7 @@
 from scipy.spatial import distance
 
 
-def findRegionID(coordinates, points, precision=32 ):
+def findRegionID(coordinates, points, precision=16 ):
     closest_index = 0
     dist = float('inf')
     while dist > precision:

@@ -10,7 +10,7 @@ import voronoiFunctions
 seed = r.randint(1,1000000)
 r.seed(seed)
 world_size = 64
-world_complexity = 64
+world_complexity = 512
 regions = r.randint(2*world_complexity, 4*world_complexity)
 points = [[world_size, world_size], [-world_size, world_size], [world_size, -world_size], [-world_size, -world_size]]
 
@@ -45,7 +45,7 @@ for y in range(0, world_size):
         tileToAdd = None
         tileToAdd = tilesetFunctions.heightCheck([x, y], height_map)
         if tileToAdd == "#":
-            tileToAdd = tilesetFunctions.biomeCheck([x, y], world_size, regions, points)
+            tileToAdd = tilesetFunctions.biomeCheck([x, y], world_size, points)
         if (x == 0) and (y == 0):
             tileToAdd = "X"
         current_x.append(tileToAdd)

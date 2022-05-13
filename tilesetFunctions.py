@@ -22,7 +22,7 @@ def heightCheck(coordinates, height_map):
 
     return "#"
 
-def biomeCheck(coordinates, world_size, regions, points):
+def biomeCheck(coordinates, world_size, points):
     global previous_rainfall
     region_id = voronoiFunctions.findRegionID(coordinates, points) 
 
@@ -40,7 +40,6 @@ def biomeCheck(coordinates, world_size, regions, points):
         temperature = -1
     else:
         temperature = 0
-        rainfall = 0
 
     if region_id % 2 == 0 and temperature != -3:
         if r.randint(0, 100) < 95:
@@ -56,8 +55,6 @@ def biomeCheck(coordinates, world_size, regions, points):
             return "I"
         elif rainfall == 1:
             return "S"
-        elif temperature == -3:
-            return "A"
         else:
             return "#"
     elif temperature == 0:
@@ -93,7 +90,7 @@ def tileToColor(tile):
     elif tile == "I":
         return '\033[36;49m'
     elif tile == "V":
-        return '\033[31;49m'
+        return '\033[33;49m'
     elif tile == "F":
         return '\033[32;49m'
     elif tile == "M":
